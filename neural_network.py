@@ -21,12 +21,12 @@ def create_model(data_filename, scale, train=True):
         model = keras.models.Sequential()
         # model.add(keras.layers.LeakyReLU(alpha=0.3))
         # input layer
-        model.add(Dense(65,activation='tanh', input_shape=(65,)))
+        model.add(Dense(64,activation='tanh', input_shape=(64,)))
         model.add(Dropout(0.2))
 
         #20 hidden layers
-        for i in range(4):
-            model.add(Dense(1000,activation='tanh'))
+        for i in range(40):
+            model.add(Dense(100,activation='tanh'))
             model.add(Dropout(0.2))
         # output layer
         if(scale):
@@ -39,9 +39,11 @@ def create_model(data_filename, scale, train=True):
         model.compile(loss='mean_squared_error',optimizer=opt_adam,metrics=['accuracy'])
         model.summary()
         # early stoppping at local minimums
-        es = EarlyStopping(monitor='val_loss', mode='min')
+        # es = EarlyStopping(monitor='val_loss', mode='min')
 
-        model.fit(p, m, epochs=30, batch_size=128, callbacks=[es], validation_split=0.1)
+        # model.fit(p, m, epochs=30, batch_size=128, callbacks=[es], validation_split=0.1)
+        model.fit(p, m, epochs=30, batch_size=128, validation_split=0.1)
+
 
         # save the weights to file
         model.save("chess_weights.h5")

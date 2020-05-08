@@ -5,7 +5,7 @@ file_corresp = {} #letter to number correspondence in board files
 for i, v in enumerate(alph):
     file_corresp[v] = i
 
-def fen_to_vector(fen, turn):
+def fen_to_vector(fen):
     """FEN notation uses decribes the rows from 8th to 1st
        pieces are shown by their abbreviated names
        with uppercase letters for white pieces, and lowercase for black
@@ -19,7 +19,7 @@ def fen_to_vector(fen, turn):
     vec = []
     app = vec.append
     
-    app(turn)
+    # app(turn)
     
     for i in fen:
         b = 1 #is black, 1 for white, -1 for back
@@ -44,32 +44,39 @@ def fen_to_vector(fen, turn):
     return np.array(vec).astype("int16")
 
 
-# In[4]:
-
 
 def move_to_vector(board):
     vec = []
     app = vec.append
     
-    last_move = board.peek().uci()
-    app(file_corresp[last_move[0]])
+    if (type(board) == str):
+        last_move = board
+    else:
+        last_move = board.peek().uci()
+
+    app(file_corresp[last_move[0]] + 1)
     app(int(last_move[1]))
-    app(file_corresp[last_move[2]])
+    app(file_corresp[last_move[2]] + 1)
     app(int(last_move[3]))
     
     return (np.array(vec) - 1).astype("int16")
-    
+
+def vector_mirror(vec):
+    # takes a move vector and replaces it by the mirrorred version of the move
+    vec[1] = 7 - vec[1]
+    vec[3] = 7 - vec[3]
+    return vec
 
 
 # In[5]:
 
 
 def vector_to_move(vec):
-    vec = vec
+    print(vec)
     move = []
     move.append(alph[vec[0]])
-    move.append(vec[1])
+    move.append(vec[1] + 1)
     move.append(alph[vec[2]])
-    move.append(vec[3])
+    move.append(vec[3] + 1)
     
     return "".join([str(i) for i in move])

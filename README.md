@@ -20,7 +20,7 @@ Sid-chess uses a NN model trained on keras using the games from string players (
 
 Install dependencies with:
 
-`pip3 install -t requirements.txt`
+`pip3 install -t requirements`
 
 You can run sid-chess on your own by executing:
 
