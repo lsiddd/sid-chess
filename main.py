@@ -29,6 +29,7 @@ parser.add_argument('--iterative',     type=bool, help='(bool) date like 2019-08
   default=True)
 parser.add_argument('--token',     type=str, help='(bool) date like 2019-08-30',
   default="")
+parser.add_argument('--grid', type=str, default=False)
 args = parser.parse_args()
 
 scale = args.scale # scale the data between -1 and 1 or not
@@ -86,19 +87,11 @@ def generate_board_photo(board):
 
 def create_game():
 
-    # ==================instantiate the chess match==========
-    #create start position
-    fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-    # create board
-    board = chess.Board(fen)
-    # initialize pgn
-    # game = chess.pgn.Game()
-    # game_started = False # control for the pgn nodes
+    board = chess.Board()
     user_turn = bool(random.getrandbits(1)) # random starting turn
 
     generate_board_photo(board)
     bot.send_board()
-    # =======================================================
 
     bot.send_message("New game created")
     return board, user_turn
